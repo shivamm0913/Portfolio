@@ -91,6 +91,15 @@ export const portfolioData = {
       image: "/AI-chatbot.png",
       color: "from-amber-500/20 to-orange-500/5",
     },
+    {
+      title: "Portfolio Website",
+      desc: "My personal portfolio website built with React and Tailwind CSS to showcase projects, skills, and experience.",
+      link: "https://shivamkewat.netlify.app/",
+      github: "https://github.com/shivamm0913/Portfolio",
+      tags: ["React", "Tailwind CSS", "JavaScript"],
+      image: "/portfolio1.png",
+      color: "from-cyan-500/20 to-sky-500/5",
+    },
   ],
   experience: [
     // {
