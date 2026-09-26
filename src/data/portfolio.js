@@ -167,7 +167,7 @@ export const portfolioData = {
       subtitle: "C++ Command-Line Tool",
       desc: "Modular C++20 command-line log analysis tool that parses structured application logs, aggregates severity statistics, filters by log level, and performs keyword search. 14/14 test assertions passing.",
       link: null,
-      github: "https://github.com/shivamm0913/Log-Analyzer-CLI",
+      github: "https://github.com/shivamm0913/cpp-log-analyzer",
       tags: ["C++20", "STL", "CMake", "CTest"],
       image: "/placeholder-project.jpg",
     },
