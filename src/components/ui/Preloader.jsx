@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { play } from "@/lib/sound";
 
 const greetings = [
   { text: "Hello", lang: "English" },
@@ -14,30 +15,29 @@ export function Preloader({ onComplete }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    // Lock scroll while intro plays
-    const originalOverflow = document.body.style.overflow;
+    // Keep scroll firmly locked while preloader is active
     document.body.style.overflow = "hidden";
 
     if (index === greetings.length - 1) {
+      // Small natural pause on final word before initiating exit
       const finishTimer = setTimeout(() => {
-        document.body.style.overflow = originalOverflow || "unset";
+        play("arrival", { volume: 0.4 });
         onComplete();
-      }, 255);
+      }, 300);
       return () => clearTimeout(finishTimer);
     }
 
     const interval = setTimeout(() => {
       setIndex((prev) => prev + 1);
-    }, 255);
+      play("whisper", { volume: 0.18 });
+    }, 220);
 
-    return () => {
-      clearTimeout(interval);
-      document.body.style.overflow = originalOverflow || "unset";
-    };
+    return () => clearTimeout(interval);
   }, [index, onComplete]);
 
   const handleSkip = () => {
     document.body.style.overflow = "unset";
+    play("arrival", { volume: 0.4 });
     onComplete();
   };
 
@@ -46,23 +46,30 @@ export function Preloader({ onComplete }) {
       initial={{ y: 0 }}
       exit={{
         y: "-100%",
-        transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] },
+        transition: {
+          duration: 0.65,
+          ease: [0.77, 0, 0.175, 1], // Immediate, buttery smooth fluid launch
+        },
+      }}
+      onAnimationComplete={() => {
+        // Unlock scroll only AFTER the exit animation has fully finished
+        document.body.style.overflow = "unset";
       }}
       onClick={handleSkip}
-      className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-background cursor-pointer select-none"
+      className="fixed inset-0 z-[999] h-screen w-screen flex flex-col items-center justify-center bg-background cursor-pointer select-none"
     >
       {/* Centered Greeting with Pulsing Dot */}
       <div className="flex items-center gap-3 sm:gap-4">
-        <span className="w-3 h-3 rounded-full bg-primary animate-pulse" />
+        <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
         <div className="h-16 sm:h-20 flex items-center justify-center overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.h1
               key={index}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
+              exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.12 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-foreground font-heading"
+              className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground font-syne"
             >
               {greetings[index].text}
             </motion.h1>
@@ -70,6 +77,19 @@ export function Preloader({ onComplete }) {
         </div>
       </div>
 
+      {/* Language subtitle & skip hint */}
+      <div className="absolute bottom-10 flex flex-col items-center gap-1 text-muted-foreground/60 text-xs tracking-widest uppercase">
+        <span className="text-[10px] opacity-40 tracking-wider">Click anywhere to skip</span>
+      </div>
+
+      {/* Liquid curved SVG bottom edge that curves as it sweeps off screen */}
+      <svg
+        className="absolute top-[99.5%] left-0 w-full h-24 sm:h-36 fill-background pointer-events-none"
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+      >
+        <path d="M0,0 L1440,0 Q720,120 0,0 Z" />
+      </svg>
     </motion.div>
   );
 }

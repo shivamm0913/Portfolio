@@ -10,7 +10,7 @@ function cn(...inputs) {
 export function SectionHeader({ title, subtitle, className }) {
   return (
     <div className={cn("mb-12 flex flex-col space-y-3", className)}>
-      <motion.h2 
+      <motion.h2
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -20,7 +20,7 @@ export function SectionHeader({ title, subtitle, className }) {
         {title}
       </motion.h2>
       {subtitle && (
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

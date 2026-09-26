@@ -42,7 +42,7 @@ function ProjectCardMedia({ project }) {
 
 export default function Projects() {
   const { projects } = portfolioData;
-  const featuredProjects = projects.filter((p) => p.featured);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 
   return (
     <section id="projects" className="py-20">

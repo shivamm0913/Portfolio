@@ -13,10 +13,17 @@ import ScrollProgress from "./components/scrollbarvertical";
 import { Particles } from "./components/ui/particles";
 import { Meteors } from "./components/ui/Meteors";
 import { Preloader } from "./components/ui/Preloader";
+import { FloatingArtPiece } from "./components/ui/FloatingArtPiece";
+import { ClickSparkle } from "./components/ui/ClickSparkle";
+import { initSound } from "./lib/sound";
 
 function App() {
   const mode = useSelector((state) => state.theme.mode);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    initSound();
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -34,6 +41,9 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* Interactive Micro Click Sparkles */}
+      <ClickSparkle />
+
       {/* Website Opening Preloader */}
       <AnimatePresence mode="wait">
         {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
@@ -50,6 +60,9 @@ function App() {
           color={mode === "dark" ? "#ffffff" : "#000000"}
           refresh
         />
+
+        {/* Ambient Abstract Art Piece drifting across the screen */}
+        <FloatingArtPiece />
 
         {/* Shooting Stars / Meteors */}
         <div className="fixed inset-0 z-[1] pointer-events-none opacity-20 dark:opacity-40">

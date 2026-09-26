@@ -13,7 +13,7 @@ export default function Hero() {
   return (
     <section id="home" className="relative pt-16 pb-24 flex items-center min-h-[85vh]">
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center w-full">
-        
+
         {/* Left: Text Content */}
         <div className="lg:col-span-3 flex flex-col">
           {/* Status Badge */}
@@ -36,9 +36,9 @@ export default function Hero() {
 
           {/* Name */}
           <BlurFade delay={0.25} inView={false}>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter text-foreground mb-3">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground mb-3 ">
               {name}
-              <span className="text-muted-foreground/40">.</span>
+              <span className="text-primary font-editorial italic font-normal">.</span>
             </h1>
           </BlurFade>
 
@@ -56,23 +56,27 @@ export default function Hero() {
             </div>
           </BlurFade>
 
-          {/* Short Bio */}
+          {/* Short Bio with Funky Editorial Accents */}
           <BlurFade delay={0.45} inView={false}>
-            <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
-              {shortBio}
+            <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed font-sans">
+              I build{" "}
+              robust, scalable
+              web applications with{" "}
+              thoughtful
+              architecture and clean user experiences.
             </p>
           </BlurFade>
 
           {/* CTA Buttons */}
           <BlurFade delay={0.55} inView={false}>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button asChild size="lg" className="group">
+              <Button asChild size="lg" className="group" data-cuelume-press="sparkle">
                 <a href="#projects">
                   View Projects
                   <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-border hover:bg-accent">
+              <Button asChild variant="outline" size="lg" className="border-border hover:bg-accent" data-cuelume-press="sparkle">
                 <a href={resumeLink} target="_blank" rel="noopener noreferrer">
                   <Download className="mr-2 h-4 w-4" />
                   Resume

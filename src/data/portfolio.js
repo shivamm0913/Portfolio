@@ -113,7 +113,6 @@ export const portfolioData = {
       github: "https://github.com/shivamm0913/Financify",
       tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Recharts"],
       image: "/financify.png",
-      featured: true,
     },
     {
       title: "Netflix Clone",
@@ -123,7 +122,6 @@ export const portfolioData = {
       github: "https://github.com/shivamm0913/NETFLIX_CLONE",
       tags: ["React", "Firebase", "Firestore", "TMDB API"],
       image: "/Netflix.png",
-      featured: true,
     },
     {
       title: "AI-ChatBot",
@@ -133,7 +131,6 @@ export const portfolioData = {
       github: "https://github.com/shivamm0913/AI-ChatBot",
       tags: ["React", "JavaScript", "Gemini API", "CSS3"],
       image: "/AI-chatbot.png",
-      featured: true,
     },
     {
       title: "Business Landing Page",
