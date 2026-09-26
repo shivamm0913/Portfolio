@@ -1,7 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -9,11 +10,13 @@ import Home from "./pages/Home";
 import ProjectsPage from "./pages/ProjectsPage";
 import ScrollToTopButton from "./components/scrollToTopButton";
 import ScrollProgress from "./components/scrollbarvertical";
-import { Meteors } from "./components/ui/Meteors";
 import { Particles } from "./components/ui/particles";
+import { Meteors } from "./components/ui/Meteors";
+import { Preloader } from "./components/ui/Preloader";
 
 function App() {
   const mode = useSelector((state) => state.theme.mode);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -31,37 +34,42 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* Website Opening Preloader */}
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
+
       {/* Main Layout Wrapper */}
-      <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 flex flex-col relative overflow-hidden">
+      <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 flex flex-col relative overflow-hidden">
         
-        {/* Particles Background */}
+        {/* Particles Background — visible */}
         <Particles
           className="fixed inset-0 z-0"
-          quantity={100}
+          quantity={80}
           ease={80}
           color={mode === "dark" ? "#ffffff" : "#000000"}
           refresh
         />
 
-        {/* Subtle background meteors */}
+        {/* Shooting Stars / Meteors */}
         <div className="fixed inset-0 z-[1] pointer-events-none opacity-20 dark:opacity-40">
-          <Meteors number={30} />
+          <Meteors number={25} />
         </div>
 
         <div className="relative z-10 flex flex-col min-h-screen">
           <ScrollProgress />
           <Navbar />
         
-        {/* Main Content Area */}
-        <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-          </Routes>
-        </main>
+          {/* Main Content — ~90% width */}
+          <main className="flex-grow w-[92%] max-w-6xl mx-auto px-2 pt-24 pb-16">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+            </Routes>
+          </main>
 
-        <Footer />
-        <ScrollToTopButton />
+          <Footer />
+          <ScrollToTopButton />
         </div>
       </div>
     </BrowserRouter>

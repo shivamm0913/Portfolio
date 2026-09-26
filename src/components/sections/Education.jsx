@@ -1,42 +1,75 @@
 import React from "react";
-import { motion } from "framer-motion";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import { GraduationCap } from "lucide-react";
 import { SectionHeader } from "../ui/SectionHeader";
+import { BlurFade } from "../ui/blur-fade";
 import { portfolioData } from "../../data/portfolio";
+import { useSelector } from "react-redux";
 
 export default function Education() {
   const { education } = portfolioData;
+  const mode = useSelector((state) => state.theme.mode);
+
+  const iconStyle = {
+    background: mode === "dark" ? "oklch(0.17 0.005 260)" : "oklch(0.95 0 0)",
+    color: mode === "dark" ? "oklch(0.93 0.01 280)" : "oklch(0.18 0 0)",
+    boxShadow: "none",
+  };
+
+  const contentStyle = {
+    background: "var(--card)",
+    border: "1px solid var(--border)",
+    borderRadius: "0.75rem",
+    boxShadow: "none",
+    padding: "1.5rem",
+  };
+
+  const arrowStyle = {
+    borderRight: "7px solid var(--border)",
+  };
 
   return (
-    <section id="education" className="py-20 border-t border-border mt-10">
-      <SectionHeader
-        title="Education"
-      />
+    <section id="education" className="py-20">
+      <BlurFade>
+        <SectionHeader title="Education" />
+      </BlurFade>
 
-      <div className="space-y-12">
-        {education.map((edu, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="flex flex-col md:flex-row gap-4 md:gap-8 border-l-2 border-border pl-6 relative"
-          >
-            {/* Timeline dot */}
-            <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-2" />
-
-            <div className="md:w-1/4 shrink-0">
-              <p className="text-sm text-muted-foreground font-mono">{edu.duration}</p>
-            </div>
-
-            <div className="md:w-3/4">
-              <h3 className="text-xl font-semibold text-foreground">{edu.degree}</h3>
-              <p className="text-primary font-medium mb-2">{edu.institution}</p>
-              <p className="text-muted-foreground leading-relaxed">{edu.details}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      <BlurFade delay={0.15}>
+        <VerticalTimeline lineColor="var(--border)" animate={true}>
+          {education.map((edu, index) => (
+            <VerticalTimelineElement
+              key={index}
+              date={edu.duration}
+              icon={<GraduationCap size={18} />}
+              iconStyle={iconStyle}
+              contentStyle={contentStyle}
+              contentArrowStyle={arrowStyle}
+              visible={true}
+            >
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
+                {edu.degree}
+              </h3>
+              <p className="text-sm font-medium text-muted-foreground mt-0.5">
+                {edu.institution}
+                {edu.location && (
+                  <span className="text-muted-foreground/70 font-normal">
+                    {" "}· {edu.location}
+                  </span>
+                )}
+              </p>
+              {edu.details && (
+                <p className="text-sm text-muted-foreground mt-2">
+                  {edu.details}
+                </p>
+              )}
+            </VerticalTimelineElement>
+          ))}
+        </VerticalTimeline>
+      </BlurFade>
     </section>
   );
 }

@@ -1,48 +1,84 @@
 import React from "react";
-import { motion } from "framer-motion";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import { Briefcase } from "lucide-react";
 import { SectionHeader } from "../ui/SectionHeader";
+import { BlurFade } from "../ui/blur-fade";
 import { portfolioData } from "../../data/portfolio";
+import { useSelector } from "react-redux";
 
 export default function Experience() {
   const { experience } = portfolioData;
+  const mode = useSelector((state) => state.theme.mode);
+
+  const iconStyle = {
+    background: mode === "dark" ? "oklch(0.17 0.005 260)" : "oklch(0.95 0 0)",
+    color: mode === "dark" ? "oklch(0.93 0.01 280)" : "oklch(0.18 0 0)",
+    boxShadow: "none",
+  };
+
+  const contentStyle = {
+    background: "var(--card)",
+    border: "1px solid var(--border)",
+    borderRadius: "0.75rem",
+    boxShadow: "none",
+    padding: "1.5rem",
+  };
+
+  const arrowStyle = {
+    borderRight: "7px solid var(--border)",
+  };
 
   return (
     <section id="experience" className="py-20">
-      <SectionHeader 
-        title="Experience & Journey" 
-        subtitle="My professional path and ongoing learning."
-      />
-      
-      <div className="space-y-12">
-        {experience.map((exp, index) => (
-          <motion.div 
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="flex flex-col md:flex-row gap-4 md:gap-8 border-l-2 border-border pl-6 relative"
-          >
-            {/* Timeline dot */}
-            <div className="absolute w-3 h-3 bg-primary rounded-full -left-[7px] top-2" />
-            
-            <div className="md:w-1/4 shrink-0">
-              <p className="text-sm text-muted-foreground font-mono">{exp.duration}</p>
-            </div>
-            
-            <div className="md:w-3/4">
-              <h3 className="text-xl font-semibold text-foreground">{exp.role}</h3>
-              <p className="text-primary font-medium mb-4">{exp.company}</p>
-              
-              <ul className="space-y-2 text-muted-foreground list-disc list-inside">
+      <BlurFade>
+        <SectionHeader
+          title="Experience"
+          subtitle="My professional journey so far."
+        />
+      </BlurFade>
+
+      <BlurFade delay={0.15}>
+        <VerticalTimeline lineColor="var(--border)" animate={true}>
+          {experience.map((exp, index) => (
+            <VerticalTimelineElement
+              key={index}
+              date={exp.duration}
+              icon={<Briefcase size={18} />}
+              iconStyle={iconStyle}
+              contentStyle={contentStyle}
+              contentArrowStyle={arrowStyle}
+              visible={true}
+            >
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
+                {exp.role}
+              </h3>
+              <p className="text-sm font-medium text-muted-foreground mt-0.5">
+                {exp.company}
+                {exp.location && (
+                  <span className="text-muted-foreground/70 font-normal">
+                    {" "}· {exp.location}
+                  </span>
+                )}
+              </p>
+
+              <ul className="mt-4 space-y-2">
                 {exp.description.map((item, i) => (
-                  <li key={i} className="leading-relaxed">{item}</li>
+                  <li
+                    key={i}
+                    className="text-sm text-muted-foreground leading-relaxed pl-4 relative before:absolute before:left-0 before:top-[0.55em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-muted-foreground/30"
+                  >
+                    {item}
+                  </li>
                 ))}
               </ul>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+            </VerticalTimelineElement>
+          ))}
+        </VerticalTimeline>
+      </BlurFade>
     </section>
   );
 }
